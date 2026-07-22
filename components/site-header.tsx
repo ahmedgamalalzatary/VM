@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { AnnouncementBar } from "@/components/announcement-bar";
 import { useCart } from "@/components/cart-provider";
 import { CATEGORIES } from "@/lib/products";
 
@@ -11,33 +12,13 @@ const NAV = [
   ...CATEGORIES.map((c) => ({ href: `/shop?fit=${c.id}`, label: c.label })),
 ];
 
-const NOTICES = [
-  "Free delivery over EGP 1,500",
-  "Cairo & Giza next day",
-  "Exchange any size within 14 days",
-];
-
 export function SiteHeader() {
   const { count, openCart, ready } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 bg-paper">
-      {/* Standing notices, running past rather than stacking up. */}
-      <div className="overflow-hidden bg-ink py-2 text-paper">
-        <div className="marquee-track flex w-max">
-          {[0, 1].map((pass) => (
-            <ul key={pass} className="flex shrink-0" aria-hidden={pass === 1}>
-              {NOTICES.map((n) => (
-                <li key={n} className="t-spec flex items-center px-6">
-                  <span className="mr-6 text-azure">/</span>
-                  {n}
-                </li>
-              ))}
-            </ul>
-          ))}
-        </div>
-      </div>
+      <AnnouncementBar />
 
       <div className="border-b border-rule">
         <div className="shell flex h-20 items-center justify-between gap-4">
@@ -47,7 +28,8 @@ export function SiteHeader() {
               alt="VM SweatPants"
               width={910}
               height={580}
-              priority
+              loading="eager"
+              fetchPriority="high"
               className="h-11 w-auto"
             />
           </Link>

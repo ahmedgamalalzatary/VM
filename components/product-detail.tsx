@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart-provider";
-import { GarmentPlate, TaperDiagram } from "@/components/garment";
+import { TaperDiagram } from "@/components/garment";
+import { ClothSwatch, ProductShot } from "@/components/product-shot";
 import { price } from "@/lib/format";
 import { isSoldOut, type Product } from "@/lib/products";
 
@@ -60,30 +61,42 @@ export function ProductDetail({ product }: { product: Product }) {
       <div className="grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         {/* ------------------------------------------------------- Gallery */}
         <div>
-          <div className="bg-haze">
-            <GarmentPlate product={product} color={color} className="w-full" />
-          </div>
+          <ProductShot
+            product={product}
+            sizes="(min-width: 1024px) 55vw, 100vw"
+            eager
+          />
 
+          {/* The cloth, at the weight and colour on offer. On this catalogue the
+              colourway is the knit, so the swatches are the colour picker as
+              well as the second shot. */}
           <div className="mt-4 grid grid-cols-4 gap-4">
             {product.colors.map((c, i) => (
               <button
                 key={c.name}
                 type="button"
                 onClick={() => setColorIndex(i)}
-                aria-label={`View ${product.name} in ${c.name}`}
+                aria-label={`Show the ${c.name} cloth`}
                 aria-pressed={i === colorIndex}
-                className={`bg-haze transition-opacity ${
+                className={`transition-opacity ${
                   i === colorIndex
                     ? "ring-1 ring-ink ring-offset-2 ring-offset-paper"
                     : "opacity-70 hover:opacity-100"
                 }`}
               >
-                <GarmentPlate product={product} color={c} className="w-full" />
+                <ClothSwatch
+                  product={product}
+                  color={c}
+                  sizes="(min-width: 1024px) 14vw, 24vw"
+                />
+                <span className="t-spec mt-2 block text-left text-ink-soft">
+                  {c.name}
+                </span>
               </button>
             ))}
           </div>
 
-          <div className="relative mt-4 aspect-2/1">
+          <div className="relative mt-6 aspect-2/1">
             <Image
               src={secondary}
               alt={
@@ -93,7 +106,7 @@ export function ProductDetail({ product }: { product: Product }) {
               }
               fill
               sizes="(min-width: 1024px) 55vw, 100vw"
-              className="object-cover"
+              className="object-cover grayscale"
             />
           </div>
         </div>

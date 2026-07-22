@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { OfferStage } from "@/components/offer-stage";
 import { ProductCard } from "@/components/product-card";
 import { Reveal } from "@/components/reveal";
 import { PRODUCTS, WEIGHTS } from "@/lib/products";
@@ -10,77 +11,23 @@ export default function Home() {
 
   return (
     <>
-      {/* ---------------------------------------------------------------- Hero */}
-      <section className="relative overflow-hidden bg-azure text-ink">
-        <div className="grid lg:grid-cols-2">
-          <div className="seam-b lg:seam-r relative aspect-4/3 sm:aspect-16/10 lg:aspect-auto lg:min-h-[88vh]">
-            <Image
-              src="/media/waist-tall.jpg"
-              alt="A hand resting in the pocket of a pair of heavyweight cotton sweatpants"
-              fill
-              priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
+      {/* --------------------------------------------------------------- Offers */}
+      <OfferStage />
 
-          <div className="flex flex-col justify-center gap-9 px-5 py-16 md:px-12 lg:py-24">
-            <p className="t-spec rise">Giza cotton · knit and sewn in Cairo</p>
-
-            <h1
-              className="t-display rise text-[clamp(3.25rem,8.5vw,7.5rem)]"
-              style={{ animationDelay: "90ms" }}
-            >
-              Weight is
-              <br />
-              the whole
-              <br />
-              point
-            </h1>
-
-            <p
-              className="rise max-w-md text-lg leading-relaxed"
-              style={{ animationDelay: "180ms" }}
-            >
-              A sweatpant lives or dies on how heavy its cloth is. We knit three
-              weights, print the number on every pair, and let you shop by it.
-            </p>
-
-            <div
-              className="rise flex flex-wrap gap-3"
-              style={{ animationDelay: "260ms" }}
-            >
-              <Link href="/shop" className="btn btn-solid">
-                Shop the catalogue
-              </Link>
-              <Link href="#weights" className="btn btn-line">
-                Compare weights
-              </Link>
-            </div>
-
-            <dl
-              className="rise mt-2 flex flex-wrap gap-x-10 gap-y-3 border-t border-ink/25 pt-6"
-              style={{ animationDelay: "340ms" }}
-            >
-              {WEIGHTS.map((w) => (
-                <div key={w.gsm}>
-                  <dt className="t-spec text-ink/70">{w.label}</dt>
-                  <dd className="t-num text-2xl">{w.gsm} gsm</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- Weights */}
+      {/* ------------------------------------------------------------- Weights
+          The thesis the hero used to carry. It reads better here anyway, right
+          against the three numbers it's about. */}
       <section id="weights" className="shell scroll-mt-32 py-20 md:py-28">
         <Reveal>
           <header className="flex flex-wrap items-end justify-between gap-6 border-b border-rule pb-6">
-            <h2 className="t-head text-4xl md:text-5xl">Start with the weight</h2>
+            <h2 className="t-head text-4xl md:text-5xl">
+              Weight is the whole point
+            </h2>
             <p className="max-w-sm text-sm text-ink-soft">
               Grams per square metre decides whether a pair wears like a t-shirt
-              or like a blanket. Pick the number first — the fit is the easy part.
+              or like a blanket. We knit three, print the number on every pair,
+              and let you shop by it. Pick the weight first — the fit is the easy
+              part.
             </p>
           </header>
         </Reveal>

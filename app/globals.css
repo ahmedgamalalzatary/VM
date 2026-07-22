@@ -262,16 +262,147 @@
     }
   }
 
-  .marquee-track {
-    animation: marquee 32s linear infinite;
+  /* --- The notice ticker -------------------------------------------------
+     Two identical passes translated by half the track, so the seam between
+     them never shows. Duration is fixed rather than responsive because the
+     notices are fixed text: the track is the same width at every viewport.
+     ----------------------------------------------------------------------- */
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker var(--ticker-duration, 18s) linear infinite;
   }
 
-  @keyframes marquee {
+  /* It runs long enough to be worth reading, so let people stop it. */
+  .ticker:hover .ticker-track,
+  .ticker:focus-within .ticker-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes ticker {
     from {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     to {
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* Shortening the duration would park the track mid-scroll with the second
+     pass half in frame. Stop it, drop the duplicate, and centre what's left so
+     the bar reads as a plain row of notices. Same layer as the rule above so
+     it outranks it. */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .ticker-pass {
+      flex-shrink: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .ticker-pass-clone {
+      display: none;
+    }
+  }
+
+  /* --- The offer stage ---------------------------------------------------
+     Panels are parallelograms sharing one lean, pulled together by exactly
+     that lean so their edges tessellate with no gap. The strip overhangs the
+     stage by a lean at each end, so the outer edges read straight and only the
+     seams between offers show the diagonal. Below lg the strip carries one
+     panel and the lean goes to zero, the same way the seam turns horizontal
+     everywhere else on the site.
+     ----------------------------------------------------------------------- */
+
+  .stage {
+    --lean: 0rem;
+  }
+
+  @media (min-width: 1024px) {
+    .stage {
+      --lean: 4.5rem;
+      /* Holds the cut against the copy column parallel to the seams inside it.
+         A percentage lean would splay, since the panels differ in width. */
+      --seam-lean: var(--lean);
+    }
+  }
+
+  .stage-strip {
+    display: flex;
+    margin-inline: calc(-1 * var(--lean));
+  }
+
+  .stage-panel {
+    position: relative;
+    clip-path: polygon(
+      var(--lean) 0,
+      100% 0,
+      calc(100% - var(--lean)) 100%,
+      0 100%
+    );
+    transition: flex-grow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stage-panel + .stage-panel {
+    margin-left: calc(-1 * var(--lean));
+  }
+
+  /* Colour is what the offer on show gets, and the only place it appears in
+     the catalogue. A sliver widening into the stage blooms as it arrives. */
+  .stage-panel img {
+    filter: grayscale(1);
+    transition:
+      filter 0.7s ease,
+      opacity 0.4s ease;
+  }
+
+  .stage-panel[data-active="true"] img {
+    filter: grayscale(0);
+  }
+
+  .stage-panel[data-active="false"] img {
+    opacity: 0.55;
+  }
+
+  .stage-panel[data-active="false"]:hover img,
+  .stage-panel[data-active="false"]:focus-visible img {
+    opacity: 0.9;
+  }
+
+  /* The dwell counter under the active token. */
+  .dwell {
+    transform-origin: left;
+    animation: dwell var(--dwell, 6.5s) linear forwards;
+  }
+
+  [data-paused="true"] .dwell {
+    animation-play-state: paused;
+  }
+
+  @keyframes dwell {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dwell {
+      animation: none;
+      transform: scaleX(1);
+    }
+
+    .stage-panel {
+      transition: none;
     }
   }
 }

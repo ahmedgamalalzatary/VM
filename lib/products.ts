@@ -38,7 +38,12 @@ export type Product = {
   sizes: string[];
   /** Sizes we're out of, by name. */
   soldOut?: string[];
-  /** Which knit macro to tint. Keeps a product's shots consistent. */
+  /** The garment worn. Shown greyscale everywhere in the catalogue. */
+  photo: string;
+  photoAlt: string;
+  /** object-position, for shots whose subject sits off-centre. */
+  photoFocus?: string;
+  /** Which knit macro to tint for the cloth swatch. */
   texture: "a" | "b" | "c" | "d";
   story: string;
   details: string[];
@@ -96,6 +101,8 @@ export const PRODUCTS: Product[] = [
     colors: [ONYX, HEATHER, BONE, AZURE],
     sizes: ["S", "M", "L", "XL", "XXL"],
     soldOut: ["S"],
+    photo: "/media/rail-walk.jpg",
+    photoAlt: "Cuffed heavyweight joggers worn walking a railway line in winter",
     texture: "a",
     story:
       "The heaviest thing we make. Four hundred grams of loopback terry per square metre, brushed once on the inside so it softens instead of pilling. It falls straight from the hip and closes tight at the ankle.",
@@ -120,6 +127,9 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 32, hem: 15, inseam: 74, rise: 29 },
     colors: [HEATHER, NAVY, OLIVE, ONYX],
     sizes: ["S", "M", "L", "XL", "XXL"],
+    photo: "/media/stride.jpg",
+    photoAlt: "A tapered pair caught mid-jump above a concrete lot",
+    photoFocus: "50% 28%",
     texture: "b",
     story:
       "The pair that ends up in the wash every week. Mid weight, so it works in November and still works in March. We cut the rise a centimetre lower than the Corniche and left a little more room through the seat.",
@@ -144,6 +154,8 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 31, hem: 15, inseam: 73, rise: 29 },
     colors: [BONE, SAND, HEATHER],
     sizes: ["S", "M", "L", "XL"],
+    photo: "/media/cuff-sneaker.jpg",
+    photoAlt: "A light ribbed cuff gathered above a white sneaker",
     texture: "c",
     story:
       "Built for the north coast in August. Unbrushed single-knit that breathes, in colours that don't hold heat. Thin enough to roll into a bag and forget about.",
@@ -167,6 +179,8 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 33, hem: 21, inseam: 76, rise: 30 },
     colors: [ONYX, HEATHER, SLATE, BONE],
     sizes: ["S", "M", "L", "XL", "XXL"],
+    photo: "/media/waist-wide.jpg",
+    photoAlt: "A hand resting in the side pocket, shot square at the hip",
     texture: "a",
     story:
       "An open hem that breaks once over the shoe. Same terry as the Maadi, cut with no taper at all, so it reads closer to a trouser than a track pant.",
@@ -191,6 +205,9 @@ export const PRODUCTS: Product[] = [
     colors: [ONYX, BONE, OLIVE],
     sizes: ["S", "M", "L", "XL"],
     soldOut: ["XL"],
+    photo: "/media/walk-bridge.jpg",
+    photoAlt: "A full-length wide leg worn walking a suspension bridge",
+    photoFocus: "50% 62%",
     texture: "d",
     story:
       "Heavy fabric is the only way a wide leg hangs properly instead of billowing. High rise, full through the thigh, and a hem wide enough to sit on top of a boot.",
@@ -214,6 +231,9 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 32, hem: 22, inseam: 75, rise: 29 },
     colors: [BONE, HEATHER, SAND],
     sizes: ["S", "M", "L", "XL"],
+    photo: "/media/waist-tall.jpg",
+    photoAlt: "The waistband and front seam of a light straight leg",
+    photoFocus: "50% 70%",
     texture: "c",
     story:
       "The lightest straight leg we cut. Wears like a pyjama and looks like a trouser, which is the whole point.",
@@ -239,6 +259,9 @@ export const PRODUCTS: Product[] = [
     colors: [OLIVE, ONYX, SAND],
     sizes: ["S", "M", "L", "XL", "XXL"],
     soldOut: ["M"],
+    photo: "/media/hoodie-street.jpg",
+    photoAlt: "Sweatpants and a hood, sitting out an afternoon at a skatepark",
+    photoFocus: "50% 62%",
     texture: "b",
     story:
       "Named after the wind that arrives every spring and puts sand through everything. Two bellowed thigh pockets, both with flaps that actually close, in a ripstop cotton that shrugs the grit off.",
@@ -263,6 +286,9 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 35, hem: 22, inseam: 76, rise: 31 },
     colors: [ONYX, OLIVE, SLATE],
     sizes: ["M", "L", "XL", "XXL"],
+    photo: "/media/lacing.jpg",
+    photoAlt: "Crouching to lace a boot on a cold morning",
+    photoFocus: "50% 45%",
     texture: "d",
     story:
       "A workwear pattern in sweatpant fabric. Straight through the leg, reinforced where a knee usually goes first, with pockets sized for a tape measure and a phone.",
@@ -286,6 +312,9 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 33, hem: 30, inseam: 18, rise: 29 },
     colors: [HEATHER, ONYX, NAVY, CLAY],
     sizes: ["S", "M", "L", "XL", "XXL"],
+    photo: "/media/hoodie-back.jpg",
+    photoAlt: "Sweat shorts and a hood, seen from behind at a rail",
+    photoFocus: "50% 62%",
     texture: "a",
     story:
       "An 18 centimetre inseam, which lands just above the knee on most people. Same terry and same waistband as the Maadi, so the two wear as a set.",
@@ -309,6 +338,8 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 32, hem: 29, inseam: 15, rise: 28 },
     colors: [BONE, SAND, AZURE],
     sizes: ["S", "M", "L", "XL"],
+    photo: "/media/tracksuit-field.jpg",
+    photoAlt: "Stretching out on a playing field on a warm afternoon",
     texture: "c",
     story:
       "Shorter and thinner than the Delta. The pair you leave at the beach house.",
@@ -327,6 +358,9 @@ export const PRODUCTS: Product[] = [
     measurements: { thigh: 0, hem: 0, inseam: 0, rise: 0 },
     colors: [ONYX, HEATHER, BONE, AZURE],
     sizes: ["S", "M", "L", "XL", "XXL"],
+    photo: "/media/hoodie-rain.jpg",
+    photoAlt: "A heavyweight hoodie worn in light rain",
+    photoFocus: "50% 40%",
     texture: "b",
     story:
       "Cut to sit over the Corniche without bunching. A two-panel hood that stands up on its own, and a kangaroo pocket set low enough to put your hands in while walking.",
@@ -351,6 +385,8 @@ export const PRODUCTS: Product[] = [
     colors: [HEATHER, ONYX, NAVY, SLATE],
     sizes: ["S", "M", "L", "XL", "XXL"],
     soldOut: ["XXL"],
+    photo: "/media/grass-lie.jpg",
+    photoAlt: "A midweight crewneck, lying back on cut grass",
     texture: "a",
     story:
       "A plain crewneck with a proper ribbed collar that keeps its shape after the tenth wash. Nothing printed on it anywhere.",

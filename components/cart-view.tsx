@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/components/cart-provider";
-import { GarmentPlate } from "@/components/garment";
+import { ProductShot } from "@/components/product-shot";
 import { price } from "@/lib/format";
 import { getProduct } from "@/lib/products";
 
@@ -48,18 +48,16 @@ export function CartView() {
         <ul className="divide-y divide-rule border-b border-rule">
           {items.map((item) => {
             const product = getProduct(item.slug);
-            const color = product?.colors.find((c) => c.name === item.color);
             return (
               <li key={item.key} className="flex gap-5 py-6 first:pt-0">
                 <Link
                   href={`/product/${item.slug}`}
                   className="w-24 shrink-0 bg-haze sm:w-32"
                 >
-                  {product && color && (
-                    <GarmentPlate
+                  {product && (
+                    <ProductShot
                       product={product}
-                      color={color}
-                      className="w-full"
+                      sizes="(min-width: 640px) 128px, 96px"
                     />
                   )}
                 </Link>

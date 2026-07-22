@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart, type CartItem } from "@/components/cart-provider";
-import { GarmentPlate } from "@/components/garment";
+import { ProductShot } from "@/components/product-shot";
 import { orderNumber, price } from "@/lib/format";
 import { getProduct } from "@/lib/products";
 
@@ -105,16 +105,11 @@ export function CheckoutView() {
           <ul className="mt-10 divide-y divide-rule border-y border-rule">
             {placed.items.map((item) => {
               const product = getProduct(item.slug);
-              const color = product?.colors.find((c) => c.name === item.color);
               return (
                 <li key={item.key} className="flex items-center gap-4 py-4">
                   <div className="w-14 shrink-0 bg-haze">
-                    {product && color && (
-                      <GarmentPlate
-                        product={product}
-                        color={color}
-                        className="w-full"
-                      />
+                    {product && (
+                      <ProductShot product={product} sizes="56px" />
                     )}
                   </div>
                   <div className="flex-1">
@@ -277,16 +272,11 @@ export function CheckoutView() {
           <ul className="mt-6 divide-y divide-rule border-y border-rule">
             {items.map((item) => {
               const product = getProduct(item.slug);
-              const color = product?.colors.find((c) => c.name === item.color);
               return (
                 <li key={item.key} className="flex items-center gap-4 py-4">
                   <div className="w-14 shrink-0 bg-haze">
-                    {product && color && (
-                      <GarmentPlate
-                        product={product}
-                        color={color}
-                        className="w-full"
-                      />
+                    {product && (
+                      <ProductShot product={product} sizes="56px" />
                     )}
                   </div>
                   <div className="min-w-0 flex-1">

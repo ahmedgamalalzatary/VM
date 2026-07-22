@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useCart } from "@/components/cart-provider";
-import { GarmentPlate } from "@/components/garment";
+import { ProductShot } from "@/components/product-shot";
 import { price } from "@/lib/format";
 import { getProduct } from "@/lib/products";
 
@@ -83,9 +83,6 @@ export function CartDrawer() {
                   <AnimatePresence initial={false}>
                     {items.map((item) => {
                       const product = getProduct(item.slug);
-                      const color = product?.colors.find(
-                        (c) => c.name === item.color,
-                      );
                       return (
                         <motion.li
                           key={item.key}
@@ -102,12 +99,8 @@ export function CartDrawer() {
                               onClick={closeCart}
                               className="w-20 shrink-0 bg-haze"
                             >
-                              {product && color && (
-                                <GarmentPlate
-                                  product={product}
-                                  color={color}
-                                  className="w-full"
-                                />
+                              {product && (
+                                <ProductShot product={product} sizes="80px" />
                               )}
                             </Link>
 

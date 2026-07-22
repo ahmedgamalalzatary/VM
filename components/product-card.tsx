@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { GarmentPlate } from "@/components/garment";
+import { ClothSwatch, ProductShot } from "@/components/product-shot";
 import { price } from "@/lib/format";
 import type { Product } from "@/lib/products";
 
 export function ProductCard({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
   const color = product.colors[active];
-  const next = product.colors[(active + 1) % product.colors.length];
   const onSale = product.compareAt != null;
 
   return (
@@ -19,17 +18,21 @@ export function ProductCard({ product }: { product: Product }) {
         className="relative block overflow-hidden bg-haze"
         aria-label={`${product.name} — ${product.subtitle}, ${price(product.price)}`}
       >
-        <GarmentPlate product={product} color={color} className="w-full" />
+        <ProductShot product={product} sizes="(min-width: 1024px) 22vw, 45vw" />
 
-        {/* Second colourway, wiped in on the brand's diagonal. */}
-        {product.colors.length > 1 && (
-          <div
-            className="swap-wipe group-hover:swap-open group-focus-within:swap-open absolute inset-0"
-            aria-hidden
-          >
-            <GarmentPlate product={product} color={next} className="h-full w-full" />
-          </div>
-        )}
+        {/* The cloth it's knit from, wiped in on the brand's diagonal. Colour
+            arrives with the knit rather than with the photograph. */}
+        <div
+          className="swap-wipe group-hover:swap-open group-focus-within:swap-open absolute inset-0"
+          aria-hidden
+        >
+          <ClothSwatch
+            product={product}
+            color={color}
+            sizes="(min-width: 1024px) 22vw, 45vw"
+            className="h-full"
+          />
+        </div>
 
         {product.badge && (
           <span
@@ -73,7 +76,7 @@ export function ProductCard({ product }: { product: Product }) {
               key={c.name}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`Show ${product.name} in ${c.name}`}
+              aria-label={`Show the ${c.name} cloth`}
               aria-pressed={i === active}
               title={c.name}
               className={`size-4 rounded-full border transition-transform hover:scale-110 ${
