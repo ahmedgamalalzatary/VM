@@ -1,26 +1,277 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   VM SweatPants — design tokens
+   Palette is derived from the wordmark: an azure V interlocking a black M.
+   The seam where those two letters meet is the brand's one graphic device.
+   ========================================================================== */
+
+@theme {
+  --color-paper: #ffffff;
+  --color-haze: #f2f3f5;
+  --color-rule: #e3e5e8;
+  --color-ink: #0b0b0c;
+  --color-ink-soft: #6b6e73;
+  --color-azure: #0191d8;
+  --color-azure-deep: #006da8;
+  --color-mist: #d6ecf8;
+
+  --font-display: var(--font-archivo), "Arial Black", sans-serif;
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Every diagonal on the site leans at the same angle as the wordmark's
+     shared stroke, so seams stay parallel across sections. */
+  --seam-lean: 16%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-azure);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-azure-deep);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* --- Typography roles -------------------------------------------------- */
+
+  /* Expanded, near-black grotesque. Sportswear volume without shouting. */
+  .t-display {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 112;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.84;
+    letter-spacing: -0.025em;
+  }
+
+  .t-head {
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 108;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+
+  /* Monospace is reserved for measured things: weights, prices, sizes, IDs. */
+  .t-spec {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .t-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* --- Controls ---------------------------------------------------------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.9375rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    transition:
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-solid {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-solid:hover {
+    background: var(--color-azure-deep);
+  }
+
+  /* Black on azure, straight off the wordmark. */
+  .btn-azure {
+    background: var(--color-azure);
+    color: var(--color-ink);
+  }
+
+  .btn-azure:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn-line {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+  }
+
+  .btn-line:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .btn[disabled] {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* --- Link with a rule that draws itself in ----------------------------- */
+
+  .link-draw {
+    position: relative;
+  }
+
+  .link-draw::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.15em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .link-draw:hover::after,
+  .link-draw:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The seam.
+   One hard diagonal, always at --seam-lean, so every cut on the site stays
+   parallel to the stroke the V and the M share in the wordmark. Used in three
+   places only: the hero, the Cairo section, and the product-card colour swap.
+   Declared as utilities so they take responsive variants — the cut turns
+   horizontal once the layout stacks.
+   --------------------------------------------------------------------------- */
+
+@utility seam-r {
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--seam-lean)) 100%, 0 100%);
+}
+
+@utility seam-l {
+  clip-path: polygon(var(--seam-lean) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+@utility seam-b {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--seam-lean)), 0 100%);
+}
+
+@utility swap-wipe {
+  clip-path: polygon(0 0, 0 0, -18% 100%, 0 100%);
+  transition: clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@utility swap-open {
+  clip-path: polygon(0 0, 134% 0, 116% 100%, 0 100%);
+}
+
+@layer utilities {
+  .shell {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* Hairline that reads as a construction line, not a border. */
+  .rule-t {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .rise {
+    animation: rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* The load-in is staggered by delay, so shortening the duration alone would
+     leave each element invisible until its turn. Drop the animation instead.
+     This has to live in the same layer as .rise to outrank it. */
+  @media (prefers-reduced-motion: reduce) {
+    .rise {
+      animation: none;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.85em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .marquee-track {
+    animation: marquee 32s linear infinite;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
